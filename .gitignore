@@ -1,0 +1,5 @@
+gnorar cache ou arquivos grandes gerados automaticamente
+**/cache/*
+**/tmp/*
+**/google-chrome/*
+
