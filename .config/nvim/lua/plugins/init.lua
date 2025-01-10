@@ -1,5 +1,9 @@
 return {
   {
+    "nvim-lua/plenary.nvim",
+    lazy = true, -- Carregar apenas quando necessário
+  },
+  {
     "stevearc/conform.nvim",
     event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
@@ -21,6 +25,14 @@ return {
         "html", "css"
       },
     },
+  },
+
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,                                                                           -- Carregar imediatamente
+    config = function()
+      vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true }) -- Atalho para abrir o LazyGit
+    end,
   },
 
   {
@@ -49,11 +61,7 @@ return {
         end,
       })
     end,
-    dependencies = { "nvim-lua/plenary.nvim" }, -- Certifique-se de incluir esta dependência
   },
-
-
-
   {
     "williamboman/mason.nvim",
     opts = {
@@ -62,7 +70,8 @@ return {
         "tailwindcss-language-server",
         "typescript",
         "stylua"
-      }
+      },
+      automatic_installation = true
     }
   }
 }
