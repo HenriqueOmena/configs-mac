@@ -9,7 +9,6 @@ return {
     opts = require "configs.conform",
   },
 
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -29,7 +28,7 @@ return {
 
   {
     "kdheepak/lazygit.nvim",
-    lazy = true,                                                                           -- Carregar imediatamente
+    lazy = false,                                                                          -- Carregar imediatamente
     config = function()
       vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true }) -- Atalho para abrir o LazyGit
     end,
