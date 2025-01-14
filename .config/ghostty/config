@@ -3,5 +3,3 @@ keybind = cmd+backspace=text:\x15
 font-feature = -liga
 font-feature = -calt
 font-feature = -dlig
-keybind = "alt+backspace=esc:d"  # Apaga a palavra antes do cursor.
-keybind = "cmd+backspace=text:\x15"  # Ctrl-U para apagar a linha inteira..
