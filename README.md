@@ -11,6 +11,7 @@ The `dotfiles` repository automates the setup of your development environment. I
 1. **📝 Configuration Files:**
    - `~/.config/nvim` for 🖋️ Neovim.
    - `~/.config/ghostty` for 👻 Ghostty.
+   - `~/.config/yazi` for 📂 Yazi.
    - `~/.tmux.conf` for 🖥️ Tmux.
 2. **📦 Package Installation:**
    - Essential CLI tools (Formulae ⚙️).
@@ -54,9 +55,16 @@ The following applications are installed via Homebrew Casks:
 
 ---
 
-## **🤖 Setup Script (****`setup.sh`****)**
+## **🔌 Zsh Plugins Installed**
 
-The `setup.sh` script automates the configuration process:
+Zsh plugins installed automatically via **GitHub**:
+
+- 🔍 `zsh-autosuggestions`: Command autosuggestions.
+- ✨ `zsh-syntax-highlighting`: Syntax highlighting for the terminal.
+
+---
+
+## **🤖 Setup Script (`setup.sh`)**
 
 ### **1️⃣ Install Homebrew**
 
@@ -75,9 +83,7 @@ brew install neovim tmux git curl fzf ripgrep gh python watchman tree-sitter zsh
 brew install --cask meetingbar alt-tab notchnook raycast tiles ghostty
 ```
 
-### **3️⃣ Clone the ****`dotfiles`**** Repository**
-
-The script clones the `dotfiles` repository into the home directory:
+### **3️⃣ Clone the `dotfiles` Repository**
 
 ```bash
 git clone <URL_TO_YOUR_REPOSITORY> ~/dotfiles
@@ -85,11 +91,10 @@ git clone <URL_TO_YOUR_REPOSITORY> ~/dotfiles
 
 ### **4️⃣ Create Symlinks**
 
-Symlinks are created to map the `dotfiles` repository to the required system paths:
-
 ```bash
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/ghostty ~/.config/ghostty
+ln -sf ~/dotfiles/.config/yazi ~/.config/yazi
 ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 ```
 
@@ -121,6 +126,7 @@ ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 
 - 🏠 Homebrew will be installed if not already present.
 - All listed Formulae and Casks will be installed.
+- Zsh plugins will be installed.
 - Configuration files will be symlinked to their appropriate locations.
 
 ---
@@ -145,6 +151,9 @@ Yes, edit the `setup.sh` script and add the desired packages under the respectiv
 
 ### **3️⃣ How do I reinstall the setup?**
 
-Simply run the `setup.sh` script on any machine to apply the configuration.
+Simply run the `setup.sh` script on any machine to apply the configuration:
 
+```bash
+~/dotfiles/setup.sh
+```
 
