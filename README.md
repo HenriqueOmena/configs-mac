@@ -102,7 +102,7 @@ ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 1. Clone the `dotfiles` repository:
 
    ```bash
-   git clone <URL_TO_YOUR_REPOSITORY> ~/dotfiles
+   git clone https://github.com/HenriqueOmena/configs-mac.git ~/dotfiles
    ```
 
 2. Make the script executable:
