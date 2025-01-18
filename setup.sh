@@ -23,6 +23,14 @@ install_casks() {
   brew install --cask meetingbar alt-tab notchnook raycast tiles ghostty
 }
 
+# Função para instalar plugins do Zsh via GitHub
+install_zsh_plugins() {
+  echo "Instalando plugins do Zsh..."
+  ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+  git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+}
+
 # Função para clonar o repositório dotfiles
 clone_dotfiles() {
   if [ ! -d "$HOME/dotfiles" ]; then
@@ -43,6 +51,7 @@ create_symlinks() {
   # Criação dos links simbólicos
   ln -sf "$HOME/dotfiles/.config/nvim" "$HOME/.config/nvim"
   ln -sf "$HOME/dotfiles/.config/ghostty" "$HOME/.config/ghostty"
+  ln -sf "$HOME/dotfiles/.config/yazi" "$HOME/.config/yazi"
   ln -sf "$HOME/dotfiles/tmux.conf" "$HOME/.tmux.conf"
 
   echo "Links simbólicos criados com sucesso!"
@@ -53,6 +62,7 @@ main() {
   install_homebrew
   install_formulae
   install_casks
+  install_zsh_plugins
   clone_dotfiles
   create_symlinks
 
