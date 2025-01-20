@@ -1,0 +1,22 @@
+[opener]
+nvim = [
+  { run = "nvim \"$@\"", block = true, for = "unix", desc = "Open with Neovim" }
+]
+
+vscode = [
+  { run = "code \"$@\"", orphan = true, for = "unix", desc = "Open with VSCode" }
+]
+
+nano = [
+  { run = "nano \"$@\"", block = true, for = "unix", desc = "Open with Nano" }
+]
+
+[open]
+rules = [
+  { name = "*", use = ["nvim", "vscode", "nano"] }
+]
+
+[keymap.manager]
+# Shift + O para abrir menu de seleção de editores
+"S-o" = "open --interactive"
+
