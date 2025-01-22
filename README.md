@@ -12,6 +12,7 @@ The `dotfiles` repository automates the setup of your development environment. I
    - `~/.config/nvim` for 🖋️ Neovim.
    - `~/.config/ghostty` for 👻 Ghostty.
    - `~/.config/yazi` for 📂 Yazi.
+   - `~/.config/lazygit` for 🎛️ LazyGit.
    - `~/.tmux.conf` for 🖥️ Tmux.
 2. **📦 Package Installation:**
    - Essential CLI tools (Formulae ⚙️).
@@ -39,7 +40,7 @@ The following tools are installed using 🏠 Homebrew:
 - 👀 `watchman`: File watching service.
 - 🌈 `tree-sitter`: Syntax parsing library.
 - 🐚 `zsh`: Zsh shell.
-- 📂 `yazi`: File manager.
+- 📂 `yazi`: File manager.lazygit
 - 🎛️ `lazygit`: Git TUI.
 
 ### **🖼️ Casks (GUI Applications)**
@@ -95,6 +96,7 @@ git clone <URL_TO_YOUR_REPOSITORY> ~/dotfiles
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/ghostty ~/.config/ghostty
 ln -sf ~/dotfiles/.config/yazi ~/.config/yazi
+ln -sf ~/dotfiles/.config/lazygit ~/.config/lazygit
 ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 ```
 

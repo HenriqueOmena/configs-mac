@@ -1,0 +1,6 @@
+customCommands:
+  - key: "o"
+    description: "Abrir PR atual no navegador"
+    command: "gh pr view --web"
+    context: "global"
+
