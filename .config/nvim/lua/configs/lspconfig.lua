@@ -4,7 +4,7 @@ require("nvchad.configs.lspconfig").defaults()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "ts_ls", "eslint", "tailwindcss", "lua_ls" }
+local servers = { "html", "cssls", "eslint", "tailwindcss", }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -16,19 +16,20 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- Configuração do TypeScript/TSX
+-- Configuração específica para ts_ls
 lspconfig.ts_ls.setup {
   on_attach = function(client, bufnr)
-    -- Desative formatação automática pelo ts_ls se você usar algo como prettier
+    -- Desativa formatação pelo ts_ls para evitar conflitos com Prettier
     client.server_capabilities.documentFormattingProvider = false
 
-    -- Atalhos úteis
+    -- Atalhos úteis para TypeScript
     local opts = { noremap = true, silent = true }
     local buf_set_keymap = vim.api.nvim_buf_set_keymap
     buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
   end,
-  capabilities = require("cmp_nvim_lsp").default_capabilities(),
+  capabilities = nvlsp.capabilities,
+  filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
 }
 
 lspconfig.lua_ls.setup {
