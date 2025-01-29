@@ -44,7 +44,7 @@ return {
 
   {
     "kdheepak/lazygit.nvim",
-    lazy = false,                                                                          -- Carregar imediatamente
+    lazy = false,
     config = function()
       vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true }) -- Atalho para abrir o LazyGit
     end,
@@ -57,8 +57,14 @@ return {
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.prettier,  -- Formatação para HTML, CSS, JS, etc.
-          null_ls.builtins.diagnostics.eslint_d, -- Diagnóstico do ESLint
+          null_ls.builtins.formatting.prettier.with({
+            filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "yaml", "markdown" },
+          }),
+          null_ls.builtins.diagnostics.eslint_d.with({
+            filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+          }),
+          null_ls.builtins.diagnostics.stylelint,
+          null_ls.builtins.formatting.stylelint,
           null_ls.builtins.formatting.stylua.with({
             extra_args = { "--config-path", vim.fn.expand("~/.config/stylua/stylua.toml") },
           }), -- Formatação para Lua
@@ -84,7 +90,10 @@ return {
         "typescript-language-server",
         "tailwindcss-language-server",
         "typescript",
-        "stylua"
+        "stylua",
+        "eslint_d",
+        "stylelint",
+        "prettier"
       },
       automatic_installation = true
     }

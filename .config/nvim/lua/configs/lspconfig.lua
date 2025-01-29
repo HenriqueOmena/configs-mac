@@ -1,11 +1,17 @@
--- load defaults i.e lua_lsp
-require("nvchad.configs.lspconfig").defaults()
+-- Carrega configurações padrão do NvChad, mas ignora o lua_ls
+local defaults = require("nvchad.configs.lspconfig").defaults
+local M = {}
+
+-- Sobrescreve a função defaults para evitar configuração automática do lua_ls
+M.on_attach = defaults.on_attach
+M.on_init = defaults.on_init
+M.capabilities = defaults.capabilities
 
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
 local servers = { "html", "cssls", "eslint", "tailwindcss", }
-local nvlsp = require "nvchad.configs.lspconfig"
+local nvlsp = M  -- Usa nossa versão modificada das configurações padrão
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -32,21 +38,13 @@ lspconfig.ts_ls.setup {
   filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
 }
 
-lspconfig.lua_ls.setup {
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilities = nvlsp.capabilities,
-  settings = {
-    Lua = {
-      runtime = {
-        version = "LuaJIT",
-      },
-      diagnostics = {
-        globals = { "vim" },
-      },
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-}
+-- Configuração explícita para desativar o lua_ls
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lua",
+  callback = function()
+    vim.diagnostic.disable(0)  -- Desativa diagnósticos para arquivos Lua
+  end
+})
+
+-- Retorna o módulo modificado
+return M

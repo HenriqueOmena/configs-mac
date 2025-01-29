@@ -20,5 +20,31 @@ map("n", "K", function()
   end
 end, { desc = "Show LSP hover and copy diagnostic" })
 
+-- Terminal toggle
+map("n", "<leader>tt", function()
+  local term = require("toggleterm")
+  term.toggle(1, nil, nil, "float")
+  -- Força o foco no terminal e entra no modo de inserção
+  vim.cmd("stopinsert")
+  vim.defer_fn(function()
+    vim.cmd("startinsert")
+  end, 100)
+end, { desc = "Toggle floating terminal", noremap = true, silent = true })
+
+-- Adiciona um autocmd para garantir que o terminal esteja sempre no modo de inserção quando focado
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  callback = function()
+    vim.cmd("startinsert")
+  end
+})
+
+-- Adiciona um autocmd para garantir que o terminal volte ao modo de inserção quando focado novamente
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "term://*",
+  callback = function()
+    vim.cmd("startinsert")
+  end
+})
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
