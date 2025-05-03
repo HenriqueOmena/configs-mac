@@ -1,101 +1,158 @@
 return {
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
-    }
-  },
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			"rcarriga/nvim-notify",
+		},
+	},
 
-  {
-    "nvim-lua/plenary.nvim",
-    lazy = true, -- Carregar apenas quando necessário
-  },
-  {
-    "stevearc/conform.nvim",
-    event = 'BufWritePre', -- uncomment for format on save
-    opts = require "configs.conform",
-  },
+	{
+		"nvim-lua/plenary.nvim",
+		lazy = true, -- Carregar apenas quando necessário
+	},
+	{
+		"stevearc/conform.nvim",
+		event = "BufWritePre", -- uncomment for format on save
+		opts = require("configs.conform"),
+	},
 
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "configs.lspconfig"
-    end,
-  },
+	{
+		"neovim/nvim-lspconfig",
+		config = function()
+			require("configs.lspconfig")
+		end,
+	},
 
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim", "lua", "vimdoc",
-        "html", "css"
-      },
-    },
-  },
+	{
+		"nvim-treesitter/nvim-treesitter",
+		opts = {
+			ensure_installed = {
+				"vim",
+				"lua",
+				"vimdoc",
+				"html",
+				"css",
+			},
+		},
+	},
 
-  {
-    "kdheepak/lazygit.nvim",
-    lazy = false,
-    config = function()
-      vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true }) -- Atalho para abrir o LazyGit
-    end,
-  },
+	{
+		"kdheepak/lazygit.nvim",
+		lazy = false,
+		config = function()
+			vim.keymap.set("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true }) -- Atalho para abrir o LazyGit
+		end,
+	},
 
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    lazy = false, -- Garante que ele carregue imediatamente
-    config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.prettier.with({
-            filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "yaml", "markdown" },
-          }),
-          null_ls.builtins.diagnostics.eslint_d.with({
-            filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-          }),
-          null_ls.builtins.diagnostics.stylelint,
-          null_ls.builtins.formatting.stylelint,
-          null_ls.builtins.formatting.stylua.with({
-            extra_args = { "--config-path", vim.fn.expand("~/.config/stylua/stylua.toml") },
-          }), -- Formatação para Lua
-        },
-        -- Configuração para auto-formatar ao salvar
-        on_attach = function(client, bufnr)
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ bufnr = bufnr })
-              end,
-            })
-          end
-        end,
-      })
-    end,
-  },
-  {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "typescript-language-server",
-        "tailwindcss-language-server",
-        "typescript",
-        "stylua",
-        "eslint_d",
-        "stylelint",
-        "prettier"
-      },
-      automatic_installation = true
-    }
-  }
+	{
+		"jose-elias-alvarez/null-ls.nvim",
+		lazy = false, -- Garante que ele carregue imediatamente
+		config = function()
+			local null_ls = require("null-ls")
+			null_ls.setup({
+				sources = {
+					null_ls.builtins.formatting.prettier.with({
+						filetypes = {
+							"javascript",
+							"typescript",
+							"javascriptreact",
+							"typescriptreact",
+							"json",
+							"yaml",
+							"markdown",
+						},
+					}),
+					null_ls.builtins.diagnostics.eslint_d.with({
+						filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+					}),
+					null_ls.builtins.diagnostics.stylelint,
+					null_ls.builtins.formatting.stylelint,
+					null_ls.builtins.formatting.stylua.with({
+						extra_args = { "--config-path", vim.fn.expand("~/.config/nvim/lua/configs/stylua/stylua.toml") },
+					}), -- Formatação para Lua
+				},
+				-- Configuração para auto-formatar ao salvar
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							callback = function()
+								-- Força o uso do null-ls para formatação
+								vim.lsp.buf.format({
+									bufnr = bufnr,
+									timeout_ms = 3000,
+									async = false,
+									filter = function(client)
+										return client.name == "null-ls"
+									end,
+								})
+							end,
+						})
+					end
+				end,
+			})
+		end,
+	},
+	{
+		"williamboman/mason.nvim",
+		opts = {
+			ensure_installed = {
+				"typescript-language-server",
+				"tailwindcss-language-server",
+				"typescript",
+				"stylua",
+				"eslint_d",
+				"stylelint",
+				"prettier",
+			},
+			automatic_installation = true,
+			PATH = "append",
+		},
+	},
+
+	-- Adiciona o plugin toggleterm
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		config = function()
+			require("toggleterm").setup({
+				size = 20,
+				open_mapping = [[<c-\>]],
+				hide_numbers = true,
+				shade_filetypes = {},
+				shade_terminals = true,
+				shading_factor = 2,
+				start_in_insert = true,
+				insert_mappings = true,
+				persist_size = true,
+				direction = "float",
+				close_on_exit = true,
+				shell = vim.o.shell,
+				float_opts = {
+					border = "curved",
+					winblend = 0,
+					highlights = {
+						border = "Normal",
+						background = "Normal",
+					},
+				},
+				-- Adiciona esta opção para melhorar a experiência de alternância
+				on_open = function(term)
+					vim.cmd("startinsert!")
+				end,
+				on_close = function(term)
+					vim.cmd("stopinsert")
+				end,
+			})
+		end,
+	},
 }

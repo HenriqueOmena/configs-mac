@@ -3,3 +3,4 @@ gnorar cache ou arquivos grandes gerados automaticamente
 **/tmp/*
 **/google-chrome/*
 
+.aider*
