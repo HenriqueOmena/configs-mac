@@ -153,6 +153,26 @@ return {
 					vim.cmd("stopinsert")
 				end,
 			})
+			
+			-- Configuração para o serpl (busca e substituição)
+			local Terminal = require("toggleterm.terminal").Terminal
+			local serpl = Terminal:new({
+				cmd = "serpl",
+				hidden = true,
+				direction = "float",
+				float_opts = {
+					border = "curved",
+				},
+			})
+			
+			-- Função para abrir o serpl
+			function _SERPL_TOGGLE()
+				serpl:toggle()
+			end
+			
+			-- Atalho 'fr' para busca e substituição com serpl
+			vim.api.nvim_set_keymap("n", "fr", "<cmd>lua _SERPL_TOGGLE()<CR>", {noremap = true, silent = true})
+			vim.api.nvim_set_keymap("v", "fr", "<cmd>lua _SERPL_TOGGLE()<CR>", {noremap = true, silent = true})
 		end,
 	},
 }
