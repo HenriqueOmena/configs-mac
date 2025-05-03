@@ -14,7 +14,7 @@ install_homebrew() {
 install_formulae() {
   echo "Instalando Formulae..."
   brew update
-  brew install neovim tmux git curl fzf ripgrep gh python watchman tree-sitter zsh yazi lazygit
+  brew install neovim tmux git curl fzf ripgrep gh python watchman tree-sitter zsh yazi lazygit serpl
 }
 
 # Função para instalar Casks (aplicativos GUI)

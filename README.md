@@ -40,8 +40,9 @@ The following tools are installed using 🏠 Homebrew:
 - 👀 `watchman`: File watching service.
 - 🌈 `tree-sitter`: Syntax parsing library.
 - 🐚 `zsh`: Zsh shell.
-- 📂 `yazi`: File manager.lazygit
+- 📂 `yazi`: File manager.
 - 🎛️ `lazygit`: Git TUI.
+- 🔄 `serpl`: REPL for Serialization formats (JSON, YAML, etc).
 
 ### **🖼️ Casks (GUI Applications)**
 
@@ -99,6 +100,26 @@ ln -sf ~/dotfiles/.config/yazi ~/.config/yazi
 ln -sf ~/dotfiles/.config/lazygit ~/.config/lazygit
 ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 ```
+
+---
+
+## **🧩 Terminal Utilities**
+
+### **🔄 SERPL**
+
+SERPL é uma ferramenta REPL (Read-Eval-Print Loop) para trabalhar com formatos de serialização como JSON, YAML, etc.
+
+- **Atalho no Neovim**: `<leader>fr` abre o SERPL em uma janela flutuante
+- **Saída**: Pressione `<Esc>` para fechar a janela do SERPL
+
+### **🖥️ ToggleTerm**
+
+ToggleTerm é um plugin para Neovim que fornece uma experiência de terminal integrada. Este plugin é instalado automaticamente pelo gerenciador de plugins do Neovim.
+
+- **Atalhos**:
+  - `<C-\>` (Control + Barra invertida): Abre/fecha o terminal flutuante
+  - `<Esc>` (quando no modo terminal): Esconde o terminal
+  - `<leader>tt` (alternativo): Também abre/fecha o terminal flutuante
 
 ---
 
