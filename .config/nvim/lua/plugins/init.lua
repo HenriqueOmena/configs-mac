@@ -54,7 +54,7 @@ return {
 	},
 
 	{
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		lazy = false, -- Garante que ele carregue imediatamente
 		config = function()
 			local null_ls = require("null-ls")
@@ -71,9 +71,8 @@ return {
 							"markdown",
 						},
 					}),
-					null_ls.builtins.diagnostics.eslint_d.with({
-						filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-					}),
+					-- Removido eslint diagnostics que estava causando erro
+					-- Para usar ESLint, considere usar o LSP oficial do ESLint
 					null_ls.builtins.diagnostics.stylelint,
 					null_ls.builtins.formatting.stylelint,
 					null_ls.builtins.formatting.stylua.with({
@@ -100,25 +99,25 @@ return {
 					end
 				end,
 			})
-		end,
+	end,
 	},
-	{
-		"williamboman/mason.nvim",
-		opts = {
-			ensure_installed = {
-				"typescript-language-server",
-				"tailwindcss-language-server",
-				"typescript",
-				"stylua",
-				"eslint_d",
-				"stylelint",
-				"prettier",
-			},
-			automatic_installation = true,
-			PATH = "append",
-		},
-	},
-
+	-- {
+	-- 	"williamboman/mason.nvim",
+	-- 	opts = {
+	-- 		ensure_installed = {
+	-- 			"typescript-language-server",
+	-- 			"tailwindcss-language-server",
+	-- 			"typescript",
+	-- 			"stylua",
+	-- 			"eslint_d",
+	-- 			"stylelint",
+	-- 			"prettier",
+	-- 		},
+	-- 		automatic_installation = true,
+	-- 		PATH = "append",
+	-- 	},
+	-- },
+	--
 	-- Adiciona o plugin toggleterm
 	{
 		"akinsho/toggleterm.nvim",
@@ -153,7 +152,7 @@ return {
 					vim.cmd("stopinsert")
 				end,
 			})
-			
+
 			-- Configuração para o serpl (busca e substituição)
 			local Terminal = require("toggleterm.terminal").Terminal
 			local serpl = Terminal:new({
@@ -164,15 +163,53 @@ return {
 					border = "curved",
 				},
 			})
-			
+
 			-- Função para abrir o serpl
 			function _SERPL_TOGGLE()
 				serpl:toggle()
 			end
-			
+
 			-- Atalho 'fr' para busca e substituição com serpl
-			vim.api.nvim_set_keymap("n", "fr", "<cmd>lua _SERPL_TOGGLE()<CR>", {noremap = true, silent = true})
-			vim.api.nvim_set_keymap("v", "fr", "<cmd>lua _SERPL_TOGGLE()<CR>", {noremap = true, silent = true})
+			vim.api.nvim_set_keymap("n", "fr", "<cmd>lua _SERPL_TOGGLE()<CR>", { noremap = true, silent = true })
+			vim.api.nvim_set_keymap("v", "fr", "<cmd>lua _SERPL_TOGGLE()<CR>", { noremap = true, silent = true })
 		end,
+	},
+
+	-- Codeium - AI Assistant gratuito (similar ao Copilot/Codex)
+	{
+		"Exafunction/codeium.nvim",
+		event = "BufEnter",
+		config = function()
+			require("codeium").setup({
+				-- Ativar completions automáticas
+				enable_chat = true,
+				-- Atalhos personalizados
+				keybindings = {
+					-- Aceitar sugestão completa
+					accept = "<Tab>",
+					-- Aceitar próxima palavra
+					accept_word = "<C-w>",
+					-- Aceitar próxima linha
+					accept_line = "<C-l>",
+					-- Próxima sugestão
+					next = "<M-]>",
+					-- Sugestão anterior
+					prev = "<M-[>",
+					-- Limpar sugestão
+					clear = "<C-x>",
+				},
+			})
+			
+			-- Atalhos adicionais para chat
+			vim.keymap.set('n', '<leader>cc', function() require('codeium.chat').open() end, { desc = 'Codeium Chat' })
+			vim.keymap.set('v', '<leader>ce', function() require('codeium.chat').explain() end, { desc = 'Explain code' })
+			vim.keymap.set('v', '<leader>cf', function() require('codeium.chat').fix() end, { desc = 'Fix code' })
+			vim.keymap.set('v', '<leader>co', function() require('codeium.chat').optimize() end, { desc = 'Optimize code' })
+			vim.keymap.set('n', '<leader>ct', ':CodeiumToggle<cr>', { desc = 'Toggle Codeium' })
+		end,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"hrsh7th/nvim-cmp",
+		},
 	},
 }

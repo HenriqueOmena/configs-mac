@@ -10,7 +10,7 @@ M.capabilities = default_config.capabilities
 local lspconfig = require("lspconfig")
 
 -- EXAMPLE
-local servers = { "html", "cssls", "eslint", "tailwindcss" }
+local servers = { "html", "cssls", "eslint", "tailwindcss", "ts_ls" }
 local nvlsp = M -- Usa nossa versão modificada das configurações padrão
 
 -- lsps with default config
@@ -23,7 +23,7 @@ for _, lsp in ipairs(servers) do
 end
 
 -- Configuração específica para TypeScript
-lspconfig.tsserver.setup({
+lspconfig.ts_ls.setup({
 	on_attach = function(client, bufnr)
 		-- Desativa formatação pelo tsserver para evitar conflitos com Prettier
 		client.server_capabilities.documentFormattingProvider = false

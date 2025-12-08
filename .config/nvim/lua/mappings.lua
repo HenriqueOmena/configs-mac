@@ -104,4 +104,70 @@ map("n", "<leader>fr", function()
     vim.cmd('startinsert')
 end, { desc = "Open SERPL in floating window", noremap = true, silent = true })
 
+-- Busca agrupada por arquivo com contagem de matches
+map("n", "<leader>fG", function()
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+
+	-- Pede o termo de busca
+	local search_term = vim.fn.input("Grep > ")
+	if search_term == "" then
+		return
+	end
+
+	-- Executa rg para contar matches por arquivo
+	local cmd = string.format("rg --count --color never '%s' 2>/dev/null", search_term)
+	local handle = io.popen(cmd)
+	local result = handle:read("*a")
+	handle:close()
+
+	-- Processa os resultados
+	local files = {}
+	for line in result:gmatch("[^\n]+") do
+		local file, count = line:match("^(.+):(%d+)$")
+		if file and count then
+			table.insert(files, {
+				filename = file,
+				count = tonumber(count),
+				display = string.format("%s (%d matches)", file, count),
+			})
+		end
+	end
+
+	-- Ordena por quantidade de matches (maior primeiro)
+	table.sort(files, function(a, b)
+		return a.count > b.count
+	end)
+
+	-- Cria o picker
+	pickers
+		.new({}, {
+			prompt_title = "Grep por Arquivo (" .. search_term .. ")",
+			finder = finders.new_table({
+				results = files,
+				entry_maker = function(entry)
+					return {
+						value = entry,
+						display = entry.display,
+						ordinal = entry.display,
+						filename = entry.filename,
+					}
+				end,
+			}),
+			sorter = conf.generic_sorter({}),
+			attach_mappings = function(prompt_bufnr, map)
+				actions.select_default:replace(function()
+					actions.close(prompt_bufnr)
+					local selection = action_state.get_selected_entry()
+					vim.cmd("edit " .. selection.filename)
+				end)
+				return true
+			end,
+		})
+		:find()
+end, { desc = "Grep agrupado por arquivo com contagem" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

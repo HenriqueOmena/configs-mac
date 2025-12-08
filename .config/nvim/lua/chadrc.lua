@@ -10,6 +10,44 @@ M.ui = {
 		style = "borderless", -- borderless / bordered
 		defaults = {
 			path_display = { "truncate" }, -- Aplica o truncate para todos os caminhos no Telescope
+			file_sorter = require("telescope.sorters").get_fzy_sorter,
+			file_ignore_patterns = {}, -- Não ignora nada, apenas reordena
+		},
+		pickers = {
+			live_grep = {
+				-- Função customizada para ordenar resultados
+				sorter = require("telescope.sorters").get_generic_fuzzy_sorter({}),
+				-- Adiciona peso menor para imagens
+				entry_maker = function(entry)
+					local make_entry = require("telescope.make_entry")
+					local result = make_entry.gen_from_vimgrep()(entry)
+					
+					if result then
+						local filename = result.filename or ""
+						-- Verifica se é imagem
+						if filename:match("%.(png|jpg|jpeg|gif|svg|webp|ico|bmp)$") then
+							result.ordinal = "zzz_" .. result.ordinal -- Adiciona prefixo para ordenar por último
+						end
+					end
+					
+					return result
+				end,
+			},
+			find_files = {
+				-- Também aplica ao find_files
+				entry_maker = function(entry)
+					local make_entry = require("telescope.make_entry")
+					local result = make_entry.gen_from_file()(entry)
+					
+					if result and result.ordinal then
+						if result.ordinal:match("%.(png|jpg|jpeg|gif|svg|webp|ico|bmp)$") then
+							result.ordinal = "zzz_" .. result.ordinal
+						end
+					end
+					
+					return result
+				end,
+			},
 		},
 	},
 
