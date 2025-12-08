@@ -175,41 +175,4 @@ return {
 		end,
 	},
 
-	-- Codeium - AI Assistant gratuito (similar ao Copilot/Codex)
-	{
-		"Exafunction/codeium.nvim",
-		event = "BufEnter",
-		config = function()
-			require("codeium").setup({
-				-- Ativar completions automáticas
-				enable_chat = true,
-				-- Atalhos personalizados
-				keybindings = {
-					-- Aceitar sugestão completa
-					accept = "<Tab>",
-					-- Aceitar próxima palavra
-					accept_word = "<C-w>",
-					-- Aceitar próxima linha
-					accept_line = "<C-l>",
-					-- Próxima sugestão
-					next = "<M-]>",
-					-- Sugestão anterior
-					prev = "<M-[>",
-					-- Limpar sugestão
-					clear = "<C-x>",
-				},
-			})
-			
-			-- Atalhos adicionais para chat
-			vim.keymap.set('n', '<leader>cc', function() require('codeium.chat').open() end, { desc = 'Codeium Chat' })
-			vim.keymap.set('v', '<leader>ce', function() require('codeium.chat').explain() end, { desc = 'Explain code' })
-			vim.keymap.set('v', '<leader>cf', function() require('codeium.chat').fix() end, { desc = 'Fix code' })
-			vim.keymap.set('v', '<leader>co', function() require('codeium.chat').optimize() end, { desc = 'Optimize code' })
-			vim.keymap.set('n', '<leader>ct', ':CodeiumToggle<cr>', { desc = 'Toggle Codeium' })
-		end,
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"hrsh7th/nvim-cmp",
-		},
-	},
 }
