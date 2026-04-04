@@ -4,3 +4,4 @@ gnorar cache ou arquivos grandes gerados automaticamente
 **/google-chrome/*
 
 .aider*
+.DS_Store

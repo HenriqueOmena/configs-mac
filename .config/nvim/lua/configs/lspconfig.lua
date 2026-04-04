@@ -22,6 +22,32 @@ for _, lsp in ipairs(servers) do
 	})
 end
 
+-- Configuração do Lua Language Server
+lspconfig.lua_ls.setup({
+	on_attach = nvlsp.on_attach,
+	on_init = nvlsp.on_init,
+	capabilities = nvlsp.capabilities,
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" }, -- Reconhece 'vim' como global
+			},
+			workspace = {
+				-- Faz o language server reconhecer os arquivos do Neovim
+				library = {
+					vim.fn.expand("$VIMRUNTIME/lua"),
+					vim.fn.stdpath("config") .. "/lua",
+				},
+				-- Não analisa todas as bibliotecas (performance)
+				checkThirdParty = false,
+			},
+			telemetry = {
+				enable = false,
+			},
+		},
+	},
+})
+
 -- Configuração específica para TypeScript
 lspconfig.ts_ls.setup({
 	on_attach = function(client, bufnr)
@@ -36,14 +62,6 @@ lspconfig.ts_ls.setup({
 	end,
 	capabilities = nvlsp.capabilities,
 	filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-})
-
--- Configuração explícita para desativar o lua_ls
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "lua",
-	callback = function()
-		vim.diagnostic.disable(0) -- Desativa diagnósticos para arquivos Lua
-	end,
 })
 
 -- Retorna o módulo modificado

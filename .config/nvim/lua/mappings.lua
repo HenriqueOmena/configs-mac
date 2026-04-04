@@ -31,16 +31,13 @@ map("n", "<C-\\>", function()
 end, { desc = "Toggle floating terminal", noremap = true, silent = true })
 
 -- Adiciona um mapeamento para alternar o terminal a partir do modo terminal
-map("t", "<C-\\>", function()
+map("t", "<C-\\", function()
 	local term = require("toggleterm")
 	term.toggle(1)
 end, { desc = "Toggle terminal from terminal mode", noremap = true, silent = true })
 
--- Adiciona mapeamento para esconder o terminal com ESC
-map("t", "<Esc>", function()
-	local term = require("toggleterm")
-	term.toggle(1)
-end, { desc = "Hide terminal with ESC", noremap = true, silent = true })
+-- Mapeamento para sair do modo terminal (volta ao modo normal)
+map("t", "<C-x>", "<C-\\><C-n>", { desc = "Exit terminal mode to normal mode", noremap = true, silent = true })
 
 -- Mantém o mapeamento antigo como alternativa
 map("n", "<leader>tt", function()
@@ -56,21 +53,6 @@ map("t", "<leader>tt", function()
 	term.toggle(1)
 end, { desc = "Toggle terminal from terminal mode (alternative)", noremap = true, silent = true })
 
--- Adiciona um autocmd para garantir que o terminal esteja sempre no modo de inserção quando focado
-vim.api.nvim_create_autocmd("TermOpen", {
-	pattern = "*",
-	callback = function()
-		vim.cmd("startinsert")
-	end,
-})
-
--- Adiciona um autocmd para garantir que o terminal volte ao modo de inserção quando focado novamente
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "term://*",
-	callback = function()
-		vim.cmd("startinsert")
-	end,
-})
 
 -- Mapeamento para abrir o SERPL em uma janela flutuante nativa
 map("n", "<leader>fr", function()
@@ -169,5 +151,48 @@ map("n", "<leader>fG", function()
 		})
 		:find()
 end, { desc = "Grep agrupado por arquivo com contagem" })
+
+-- ============================================
+-- CONFIGURAÇÕES ÚTEIS ADICIONAIS
+-- ============================================
+
+-- Navegação entre janelas (splits) mais fácil
+map("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
+map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window" })
+map("n", "<C-k>", "<C-w>k", { desc = "Move to top window" })
+map("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
+
+-- Redimensionar janelas com setas
+map("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
+map("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
+map("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
+map("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+
+-- Better indenting - mantém a seleção após identar no modo visual
+map("v", "<", "<gv", { desc = "Indent left and reselect" })
+map("v", ">", ">gv", { desc = "Indent right and reselect" })
+
+-- Move linhas selecionadas para cima/baixo no modo visual
+map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
+map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected lines up" })
+
+-- Melhor navegação de buffers
+map("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer" })
+map("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
+map("n", "<leader>bd", ":bdelete<CR>", { desc = "Delete current buffer" })
+map("n", "<leader>ba", ":%bd|e#|bd#<CR>", { desc = "Delete all buffers except current" })
+
+-- Centraliza a tela ao navegar com busca ou ao pular
+map("n", "n", "nzzzv", { desc = "Next search result (centered)" })
+map("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
+map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down (centered)" })
+map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up (centered)" })
+
+-- Limpa highlight da busca com ESC
+map("n", "<Esc>", ":noh<CR>", { desc = "Clear search highlight" })
+
+-- Salvar arquivo rapidamente
+map("n", "<leader>w", ":w<CR>", { desc = "Save file" })
+map("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

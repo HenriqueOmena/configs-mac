@@ -41,6 +41,15 @@ return {
 				"vimdoc",
 				"html",
 				"css",
+				"javascript",
+				"typescript",
+				"tsx",
+				"json",
+				"yaml",
+				"markdown",
+				"markdown_inline",
+				"bash",
+				"regex",
 			},
 		},
 	},
@@ -53,71 +62,6 @@ return {
 		end,
 	},
 
-	{
-		"nvimtools/none-ls.nvim",
-		lazy = false, -- Garante que ele carregue imediatamente
-		config = function()
-			local null_ls = require("null-ls")
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.prettier.with({
-						filetypes = {
-							"javascript",
-							"typescript",
-							"javascriptreact",
-							"typescriptreact",
-							"json",
-							"yaml",
-							"markdown",
-						},
-					}),
-					-- Removido eslint diagnostics que estava causando erro
-					-- Para usar ESLint, considere usar o LSP oficial do ESLint
-					null_ls.builtins.diagnostics.stylelint,
-					null_ls.builtins.formatting.stylelint,
-					null_ls.builtins.formatting.stylua.with({
-						extra_args = { "--config-path", vim.fn.expand("~/.config/nvim/lua/configs/stylua/stylua.toml") },
-					}), -- Formatação para Lua
-				},
-				-- Configuração para auto-formatar ao salvar
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							callback = function()
-								-- Força o uso do null-ls para formatação
-								vim.lsp.buf.format({
-									bufnr = bufnr,
-									timeout_ms = 3000,
-									async = false,
-									filter = function(client)
-										return client.name == "null-ls"
-									end,
-								})
-							end,
-						})
-					end
-				end,
-			})
-	end,
-	},
-	-- {
-	-- 	"williamboman/mason.nvim",
-	-- 	opts = {
-	-- 		ensure_installed = {
-	-- 			"typescript-language-server",
-	-- 			"tailwindcss-language-server",
-	-- 			"typescript",
-	-- 			"stylua",
-	-- 			"eslint_d",
-	-- 			"stylelint",
-	-- 			"prettier",
-	-- 		},
-	-- 		automatic_installation = true,
-	-- 		PATH = "append",
-	-- 	},
-	-- },
-	--
 	-- Adiciona o plugin toggleterm
 	{
 		"akinsho/toggleterm.nvim",
